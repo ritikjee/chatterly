@@ -15,7 +15,7 @@ import com.chatterly.auth_service.entity.User;
 import com.chatterly.auth_service.service.AuthService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final AuthService authService;
