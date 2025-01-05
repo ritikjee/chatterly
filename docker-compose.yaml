@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: postgres
       PGDATA: /data/postgres
     volumes:
-      - .docker/postgres_data:/data/postgres
+      - chatterly:/data/postgres
       - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
@@ -58,5 +58,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  chatterly:
   pgadmin_data:
