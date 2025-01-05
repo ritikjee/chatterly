@@ -44,7 +44,7 @@ public class JwtUtils {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    private String getSessionId(String token) {
+    public String getSessionId(String token) {
         return extractAllClaims(token).get("sid", String.class);
     }
 

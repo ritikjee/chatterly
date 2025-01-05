@@ -13,15 +13,22 @@ import com.chatterly.auth_service.dto.ResponseDTO;
 import com.chatterly.auth_service.dto.UserDTO;
 import com.chatterly.auth_service.entity.User;
 import com.chatterly.auth_service.service.AuthService;
+import com.chatterly.auth_service.service.UserService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
 
     private final AuthService authService;
+    private final UserService userService;
 
-    public UserController(AuthService authService) {
+    public UserController(AuthService authService, UserService userService) {
         this.authService = authService;
+        this.userService = userService;
     }
 
     @GetMapping("/me")
@@ -51,6 +58,58 @@ public class UserController {
 
         } catch (Exception e) {
 
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String sessionId = request.getAttribute("sessionId").toString();
+
+        userService.logout(userDetails.getUsername(), sessionId);
+
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Logout successful, cookie cleared"));
+    }
+
+    @GetMapping("/logout-all")
+    public ResponseEntity<?> logoutAllDevices(HttpServletRequest request, HttpServletResponse response) {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        userService.logoutAllDevices(userDetails.getUsername());
+
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Logout successful, cookie cleared"));
+
+    }
+
+    @GetMapping("/get-all-devices")
+    public ResponseEntity<?> getAllDevices() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        try {
+            return ResponseEntity
+                    .ok(new ResponseDTO<>(HttpStatus.OK, userService.getAllDevices(userDetails.getUsername())));
+        } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }

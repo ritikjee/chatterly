@@ -86,6 +86,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
+        String sessionId = jwtUtils.getSessionId(token);
+
+        request.setAttribute("sessionId", sessionId);
 
         filterChain.doFilter(request, response);
     }
