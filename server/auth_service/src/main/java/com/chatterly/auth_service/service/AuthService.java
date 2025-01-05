@@ -81,10 +81,6 @@ public class AuthService implements UserDetailsService {
             throw new RuntimeException("Invalid token");
         }
 
-        if (user.getTokenExpiry().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Token expired you need to generate a new one");
-        }
-
         user.setVerified(true);
         userRepository.save(user);
         return true;

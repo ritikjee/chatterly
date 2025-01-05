@@ -26,8 +26,8 @@ public class CustomMailSender {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
         Context context = new Context();
-        context.setVariable("verificationLink", verificationLink);
         context.setVariable("name", to);
+        context.setVariable("verificationLink", verificationLink);
 
         String htmlContent = templateEngine.process("verificationEmail", context);
 
