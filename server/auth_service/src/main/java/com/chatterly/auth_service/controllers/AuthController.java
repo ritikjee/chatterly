@@ -19,6 +19,7 @@ import com.chatterly.auth_service.service.AuthService;
 import com.chatterly.auth_service.utils.JwtUtils;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,9 +45,9 @@ public class AuthController {
 
         newUser.setEmail(user.getEmail());
         newUser.setPassword(user.getPassword());
-        user.setFirstname(user.getFirstname());
-        user.setLastname(user.getLastname());
-        user.setImage(user.getImage());
+        newUser.setFirstname(user.getFirstname());
+        newUser.setLastname(user.getLastname());
+        newUser.setImage(user.getImage());
 
         try {
             authService.register(newUser);
@@ -59,7 +60,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody UserInputDTO user, HttpServletResponse response,
+            HttpServletRequest request) {
 
         try {
 
@@ -67,7 +69,15 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtUtils.generateToken(userDetails);
+
+            String ipAddress = request.getHeader("X-Forwarded-For");
+            if (ipAddress == null || ipAddress.isEmpty()) {
+                ipAddress = request.getRemoteAddr();
+            }
+
+            String userAgent = request.getHeader("User-Agent");
+
+            String token = jwtUtils.generateToken(userDetails, ipAddress, userAgent);
 
             Cookie cookie = new Cookie("token", token);
             cookie.setHttpOnly(true);
@@ -105,20 +115,6 @@ public class AuthController {
             return ResponseEntity.badRequest()
                     .body(new ErrorResponseDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletResponse response) {
-
-        Cookie cookie = new Cookie("token", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Logout successful, cookie cleared"));
     }
 
 }

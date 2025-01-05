@@ -10,18 +10,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.chatterly.auth_service.dto.MessageDTO;
 import com.chatterly.auth_service.entity.User;
 import com.chatterly.auth_service.repo.UserRepository;
+import com.chatterly.auth_service.utils.MessageProducer;
 
 @Service
 public class AuthService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MessageProducer messageProducer;
 
-    public AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+            MessageProducer messageProducer) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.messageProducer = messageProducer;
     }
 
     @Override
@@ -61,6 +66,7 @@ public class AuthService implements UserDetailsService {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setVerificationToken(verificationToken);
+        messageProducer.sendMessage(new MessageDTO(user.getEmail(), verificationToken));
 
         return userRepository.save(user);
     }
@@ -96,6 +102,8 @@ public class AuthService implements UserDetailsService {
 
         String token = UUID.randomUUID().toString();
         userRepository.save(user);
+
+        messageProducer.sendMessage(new MessageDTO(email, token));
 
         return token;
     }

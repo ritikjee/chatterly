@@ -7,20 +7,29 @@ import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.chatterly.auth_service.entity.Device;
 import com.chatterly.auth_service.entity.User;
+import com.chatterly.auth_service.repo.DeviceRepository;
 import com.chatterly.auth_service.repo.UserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import ua_parser.Client;
+import ua_parser.Parser;
 
 @Service
 public class JwtUtils {
 
     private String SECRET_KEY = "your-256-bit-secret-your-256-bit-secret";
-    private final UserRepository userRepository;
 
-    public JwtUtils(UserRepository userRepository) {
+    private final UserRepository userRepository;
+    private final DeviceRepository deviceRepository;
+    private final Parser parser;
+
+    public JwtUtils(UserRepository userRepository, DeviceRepository deviceRepository, Parser parser) {
         this.userRepository = userRepository;
+        this.deviceRepository = deviceRepository;
+        this.parser = parser;
     }
 
     private Claims extractAllClaims(String token) {
@@ -45,23 +54,42 @@ public class JwtUtils {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsername(token);
+        final String tokenSessionId = getSessionId(token);
+
         User user = userRepository.findByEmail(username);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token)
-                && getSessionId(token).equals(user.getSessionId()));
+        if (user == null) {
+            return false;
+        }
+
+        boolean sessionValid = user.getDevices().stream()
+                .anyMatch(device -> device.getSessionId().equals(tokenSessionId));
+
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && sessionValid);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, String ipAddress, String deviceType) {
         User user = userRepository.findByEmail(userDetails.getUsername());
 
-        Map<String, Object> claims = new HashMap<>();
+        Device device = deviceRepository.findByUserAndIpAddressAndDeviceType(user, ipAddress, deviceType)
+                .orElseGet(() -> {
+                    Client c = parser.parse(deviceType);
+                    Device newDevice = new Device();
+                    newDevice.setIpAddress(ipAddress);
+                    newDevice.setDeviceType(c.device.family);
+                    newDevice.setOs(c.os.family);
+                    newDevice.setDeviceAgent(c.userAgent.family);
+                    newDevice.setUser(user);
+                    return deviceRepository.save(newDevice);
+                });
 
-        claims.put("sid", user.getSessionId());
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sid", device.getSessionId());
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 10))
                 .signWith(io.jsonwebtoken.security.Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
                 .compact();
     }
