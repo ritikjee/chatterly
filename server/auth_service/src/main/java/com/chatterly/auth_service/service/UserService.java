@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.chatterly.auth_service.dto.DeviceDTO;
-import com.chatterly.auth_service.entity.Device;
 import com.chatterly.auth_service.repo.DeviceRepository;
 
 @Service

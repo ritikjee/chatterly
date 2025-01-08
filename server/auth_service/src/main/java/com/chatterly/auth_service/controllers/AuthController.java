@@ -95,7 +95,7 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/verify-account")
+    @PostMapping("/verify-account")
     public ResponseEntity<?> getMethodName(@RequestParam String email, @RequestParam String token) {
         try {
             authService.verifyUser(email, token);

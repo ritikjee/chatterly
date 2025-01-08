@@ -18,7 +18,7 @@ public class MessageConsumer {
     @RabbitListener(queues = "auth_queue.register")
     public void consumeMessage(MessageDTO messageDTO) {
 
-        String verificationLink = "http://localhost:8080/api/v1/auth/verify-account?token=" + messageDTO.getToken()
+        String verificationLink = "http://localhost:3000/auth/verify-account?token=" + messageDTO.getToken()
                 + "&email="
                 + messageDTO.getEmail();
         try {
