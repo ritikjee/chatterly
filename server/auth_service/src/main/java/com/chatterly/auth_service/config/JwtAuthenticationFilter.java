@@ -45,8 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        System.out.println("Request URI: " + requestURI);
         Cookie[] cookies = request.getCookies();
-
+        System.out.println("Cookies: " + cookies);
         String token = null;
 
         if (cookies == null) {
@@ -60,6 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
+        System.out.println("Cookies: " + token);
         if (token == null) {
             sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Token is missing");
             return;

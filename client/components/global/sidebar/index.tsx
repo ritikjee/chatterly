@@ -5,6 +5,9 @@ import { usePaths } from "@/hooks/use-nav";
 import { HelpDuoToneWhite } from "@/icons";
 import Image from "next/image";
 import Items from "./item";
+import { SubscriptionPlan } from "../user-auth-button";
+import UpgradeCard from "./upgrade";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props = {
   slug: string;
@@ -31,7 +34,7 @@ const Sidebar = ({ slug }: Props) => {
      rounded-3xl 
      overflow-hidden"
     >
-      <div
+      <ScrollArea
         className="flex flex-col 
       gap-y-5
        w-full 
@@ -42,7 +45,9 @@ const Sidebar = ({ slug }: Props) => {
        bg-clip-padding 
        backdrop-filter 
        backdrop--blur__safari 
-       backdrop-blur-3xl"
+       backdrop-blur-3xl
+       rounded-3xl
+       "
       >
         <div className="flex gap-x-2 items-center p-5 justify-center">
           <Image src="/logo-small.png" width={150} height={50} alt="logo" />
@@ -58,12 +63,17 @@ const Sidebar = ({ slug }: Props) => {
             {/* WIP: Implement device features */}
             <p className="text-[#9B9CA0]">Profile</p>
           </div>
-          <div className="flex gap-x-3">
+          <div className="flex gap-x-3 pb-10">
             <HelpDuoToneWhite />
             <p className="text-[#9B9CA0]">Help</p>
           </div>
         </div>
-      </div>
+        <SubscriptionPlan type="FREE">
+          <div className="flex-1 flex flex-col justify-end">
+            <UpgradeCard />
+          </div>
+        </SubscriptionPlan>
+      </ScrollArea>
     </div>
   );
 };

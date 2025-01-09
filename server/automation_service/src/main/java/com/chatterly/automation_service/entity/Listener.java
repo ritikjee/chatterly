@@ -2,14 +2,7 @@ package com.chatterly.automation_service.entity;
 
 import com.chatterly.automation_service.enums.Listeners;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -21,8 +14,9 @@ public class Listener {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
-    @Column(nullable = false, unique = true)
-    private String automationId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "automation_id", nullable = false, unique = true)
+    private Automation automation;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/global/theme-provider";
+import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
+import "./globals.css";
+import ReactQueryProvider from "@/providers/react-query-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Chatterly",
@@ -18,14 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jakarta.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
           <Toaster />
         </ThemeProvider>
       </body>

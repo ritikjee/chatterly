@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +36,7 @@ public class Automation {
     @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trigger> triggers;
 
-    @OneToOne(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Listener listener;
 
     @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,9 +45,9 @@ public class Automation {
     @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dms> dms;
 
+    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Keyword> keywords;
+
     @Column(nullable = false)
     private String userId;
-
-    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Keyword> keywords;
 }

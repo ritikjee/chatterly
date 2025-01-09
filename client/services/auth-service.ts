@@ -31,11 +31,4 @@ export class AuthService {
       method: "POST",
     });
   }
-
-  static async getAuthenticatedUser() {
-    return await fetcher({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/me`,
-      method: "GET",
-    });
-  }
 }

@@ -1,11 +1,6 @@
 package com.chatterly.automation_service.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -20,6 +15,7 @@ public class Trigger {
     @Column(nullable = false)
     private String type;
 
-    @Column
-    private String automationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "automation_id", nullable = false)
+    private Automation automation;
 }

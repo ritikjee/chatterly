@@ -2,16 +2,19 @@ package com.chatterly.automation_service.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "keyword", uniqueConstraints = { @UniqueConstraint(columnNames = { "automationId", "word" }) })
+@Table(name = "keyword", uniqueConstraints = { @UniqueConstraint(columnNames = { "automation_id", "word" }) })
 public class Keyword {
 
     @Id
@@ -21,6 +24,7 @@ public class Keyword {
     @Column(nullable = false)
     private String word;
 
-    @Column
-    private String automationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "automation_id", nullable = false)
+    private Automation automation;
 }

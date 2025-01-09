@@ -1,10 +1,11 @@
 import axios from "axios";
 
-export const fetcher = async (payload: {
+export const fetcher = async <T>(payload: {
   url: string;
   method?: string;
   data?: any;
   params?: any;
+  headers?: any;
   responseType?: any;
   onUploadProgress?: any;
   onDownloadProgress?: any;
@@ -15,6 +16,7 @@ export const fetcher = async (payload: {
       method = "GET",
       data,
       params,
+      headers,
       responseType,
       onUploadProgress,
       onDownloadProgress,
@@ -25,6 +27,10 @@ export const fetcher = async (payload: {
       url,
       data,
       params,
+      headers: {
+        ...headers,
+        "Content-Type": "application/json",
+      },
       withCredentials: true,
       responseType,
       onUploadProgress,
@@ -32,7 +38,7 @@ export const fetcher = async (payload: {
     });
 
     return {
-      data: response.data,
+      data: response.data?.data as T,
       error: null,
     };
   } catch (error: any) {

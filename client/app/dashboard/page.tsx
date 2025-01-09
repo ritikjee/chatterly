@@ -1,8 +1,22 @@
-import { ModeToggle } from "@/components/global/mode-toggle";
-import React from "react";
+import { UserService } from "@/services/user-service";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-function DashboardPage() {
-  return <div>DashboardPage</div>;
+async function DashboardPage() {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token")?.value;
+
+  if (!token) {
+    return redirect("/auth/sign-in");
+  }
+
+  const { data } = await UserService.getAuthenticatedUser(token);
+
+  if (data) {
+    return redirect(`dashboard/${data?.firstname}${data?.lastname}`);
+  }
+
+  return redirect("/auth/sign-in");
 }
 
 export default DashboardPage;
