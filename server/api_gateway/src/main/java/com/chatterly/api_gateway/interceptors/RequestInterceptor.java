@@ -4,9 +4,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.chatterly.api_gateway.client.AuthClient;
 import com.chatterly.api_gateway.dto.ErrorResponseDTO;
-import com.chatterly.api_gateway.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.Cookie;
@@ -17,11 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class RequestInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
-    private final AuthClient authClient;
 
-    public RequestInterceptor(ObjectMapper objectMapper, @Lazy AuthClient authClient) {
+    public RequestInterceptor(@Lazy ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.authClient = authClient;
     }
 
     @Override
@@ -50,21 +46,6 @@ public class RequestInterceptor implements HandlerInterceptor {
         }
         if (tokenCookie == null) {
             sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Not authorized: Token cookie missing");
-            return false;
-        }
-
-        try {
-            UserDTO user = authClient.getAuthenticatedUser();
-
-            if (user == null) {
-                sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED,
-                        "Not authorized: Token expired or invalid");
-                return false;
-            }
-
-            request.setAttribute("user", user);
-        } catch (Exception e) {
-            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Not authorized: " + e.getMessage());
             return false;
         }
 

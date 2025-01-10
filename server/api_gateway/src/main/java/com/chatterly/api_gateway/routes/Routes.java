@@ -1,5 +1,6 @@
 package com.chatterly.api_gateway.routes;
 
+import org.springframework.cloud.gateway.server.mvc.filter.BeforeFilterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,8 @@ public class Routes {
     @Bean
     public RouterFunction<ServerResponse> automationRouterFunction() {
         return GatewayRouterFunctions.route("user_service")
-                .route(RequestPredicates.path("/api/v1/user/**"), HandlerFunctions.http("http://localhost:8082"))
+                .route(RequestPredicates.path("/api/v1/automation/**"), HandlerFunctions.http("http://localhost:8082"))
+                .before(BeforeFilterFunctions.addRequestHeader("user", "localhost"))
                 .build();
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ import com.chatterly.auth_service.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -33,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getAuthenticatedUser() {
+    public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest request) {
 
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
@@ -42,8 +44,6 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(), "User not found"));
             }
-
-            System.out.println("UserDetails: " + userDetails);
 
             User user = authService.getUserByEmail(userDetails.getUsername());
 
