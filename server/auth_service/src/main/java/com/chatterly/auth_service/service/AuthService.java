@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +31,7 @@ public class AuthService implements UserDetailsService {
     }
 
     @Override
+    @Cacheable(value = "users-details", key = "#username")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmailAndVerified(username, true);
         if (user == null) {
@@ -42,6 +44,7 @@ public class AuthService implements UserDetailsService {
         return userBuilder.build();
     }
 
+    @Cacheable(value = "users", key = "#email")
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }

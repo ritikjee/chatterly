@@ -1,5 +1,7 @@
 package com.chatterly.automation_service.entity;
 
+import java.io.Serializable;
+
 import com.chatterly.automation_service.enums.MediaType;
 
 import jakarta.persistence.*;
@@ -8,10 +10,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "post")
-public class Post {
+public class Post implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package com.chatterly.automation_service.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "automation")
-public class Automation {
+public class Automation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,16 +34,16 @@ public class Automation {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean active;
 
-    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Trigger> triggers;
 
     @OneToOne(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Listener listener;
 
-    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Dms> dms;
 
     @OneToMany(mappedBy = "automation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

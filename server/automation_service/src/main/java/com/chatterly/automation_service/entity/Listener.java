@@ -1,5 +1,7 @@
 package com.chatterly.automation_service.entity;
 
+import java.io.Serializable;
+
 import com.chatterly.automation_service.enums.Listeners;
 
 import jakarta.persistence.*;
@@ -8,10 +10,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "listener")
-public class Listener {
+public class Listener implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -1,5 +1,7 @@
 package com.chatterly.automation_service.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "keyword", uniqueConstraints = { @UniqueConstraint(columnNames = { "automation_id", "word" }) })
-public class Keyword {
+public class Keyword implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

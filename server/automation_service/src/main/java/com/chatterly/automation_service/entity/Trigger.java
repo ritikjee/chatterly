@@ -1,15 +1,17 @@
 package com.chatterly.automation_service.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "trigger")
-public class Trigger {
+public class Trigger implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false)

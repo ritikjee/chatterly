@@ -1,5 +1,6 @@
 package com.chatterly.automation_service.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -16,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "dms")
-public class Dms {
+public class Dms implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

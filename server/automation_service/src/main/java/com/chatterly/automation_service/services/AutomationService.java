@@ -3,6 +3,7 @@ package com.chatterly.automation_service.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.chatterly.automation_service.entity.Automation;
@@ -17,6 +18,7 @@ public class AutomationService {
         this.automationRepository = automationRepository;
     }
 
+    @Cacheable(value = "automations", key = "#userId")
     public List<Automation> getAutomations(String userId) {
         return automationRepository.findByUserId(userId);
     }
