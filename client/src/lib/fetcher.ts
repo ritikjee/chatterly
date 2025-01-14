@@ -1,11 +1,20 @@
 import axios from "axios";
 
+const getCookie = (key: string): string | null => {
+  if (typeof window === "undefined") {
+    const { cookies } = require("next/headers");
+    return cookies().get(key)?.value || null;
+  } else {
+    const match = document.cookie.match(new RegExp(`(^| )${key}=([^;]+)`));
+    return match ? decodeURIComponent(match[2]) : null;
+  }
+};
+
 export const fetcher = async <T>(payload: {
   url: string;
   method?: string;
   data?: any;
   params?: any;
-  headers?: any;
   responseType?: any;
   onUploadProgress?: any;
   onDownloadProgress?: any;
@@ -16,7 +25,6 @@ export const fetcher = async <T>(payload: {
       method = "GET",
       data,
       params,
-      headers,
       responseType,
       onUploadProgress,
       onDownloadProgress,
@@ -28,8 +36,8 @@ export const fetcher = async <T>(payload: {
       data,
       params,
       headers: {
-        ...headers,
         "Content-Type": "application/json",
+        Cookie: `token=${getCookie("token")}`,
       },
       withCredentials: true,
       responseType,

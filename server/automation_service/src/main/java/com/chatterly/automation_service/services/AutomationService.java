@@ -3,8 +3,6 @@ package com.chatterly.automation_service.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.chatterly.automation_service.entity.Automation;

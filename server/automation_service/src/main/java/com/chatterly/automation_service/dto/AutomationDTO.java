@@ -1,32 +1,33 @@
 package com.chatterly.automation_service.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.chatterly.automation_service.entity.Keyword;
-import com.chatterly.automation_service.entity.Listener;
+import lombok.Data;
 
-import lombok.Getter;
-import lombok.Setter;
+@Data
+public class AutomationDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-@Getter
-@Setter
-public class AutomationDTO {
     private String id;
     private String name;
     private LocalDateTime createdAt;
     private boolean active;
-    private List<Keyword> keywords;
-    private Listener listener;
+    private List<KeywordDTO> keywords;
+    private List<PostDTO> posts;
 
-    public AutomationDTO(String id, String name, LocalDateTime createdAt, boolean active, List<Keyword> keywords,
-            Listener listener) {
-        this.id = id;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.active = active;
-        this.keywords = keywords;
-        this.listener = listener;
+    @Data
+    public static class KeywordDTO implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private String id;
+        private String word;
     }
 
+    @Data
+    public static class PostDTO implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private String id;
+        private String content;
+    }
 }

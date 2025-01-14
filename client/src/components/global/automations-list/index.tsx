@@ -15,7 +15,9 @@ const AutomationList = (props: Props) => {
 
   const { data } = useQueryAutomations();
 
-  if (!data?.error && data?.data && data?.data.length === 0) {
+  console.log(data);
+
+  if (data?.error || !data?.data || data?.data?.length === 0) {
     return (
       <div className="h-[70vh] flex justify-center items-center flex-col gap-y-3">
         <h3 className="text-lg text-gray-400">No Automations </h3>

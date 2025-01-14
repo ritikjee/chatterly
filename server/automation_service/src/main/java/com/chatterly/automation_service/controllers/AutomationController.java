@@ -33,6 +33,7 @@ public class AutomationController {
             return ResponseEntity
                     .ok(new SuccessResponseDTO<>(HttpStatus.OK, automationService.getAutomations(userId)));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
         }

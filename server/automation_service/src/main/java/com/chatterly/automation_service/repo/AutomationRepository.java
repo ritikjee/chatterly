@@ -13,6 +13,7 @@ import com.chatterly.automation_service.entity.Automation;
 
 @Repository
 public interface AutomationRepository extends JpaRepository<Automation, String> {
+    // TODO : enable automation DTO
     List<Automation> findByUserId(String userId);
 
     Optional<Automation> findByIdAndUserId(String id, String userId);
