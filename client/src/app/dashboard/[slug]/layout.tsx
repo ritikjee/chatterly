@@ -7,6 +7,7 @@ import InfoBar from "@/components/global/infobar";
 import Sidebar from "@/components/global/sidebar";
 import { UserService } from "@/services/user-service";
 import { cookies } from "next/headers";
+import { AutomationService } from "@/services/automation-service";
 
 type Props = {
   children: React.ReactNode;
@@ -22,6 +23,12 @@ const Layout = async ({ children, params }: Props) => {
   await query.prefetchQuery({
     queryKey: ["user-profile"],
     queryFn: () => UserService.getAuthenticatedUser(token),
+    staleTime: 60000,
+  });
+
+  await query.prefetchQuery({
+    queryKey: ["user-automations"],
+    queryFn: () => AutomationService.getAutomations(token),
     staleTime: 60000,
   });
 

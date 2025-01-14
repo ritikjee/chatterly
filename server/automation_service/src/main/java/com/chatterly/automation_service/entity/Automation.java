@@ -21,14 +21,14 @@ import lombok.Data;
 public class Automation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false, columnDefinition = "varchar(255) default 'Untitled'")
     private String name;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean active;

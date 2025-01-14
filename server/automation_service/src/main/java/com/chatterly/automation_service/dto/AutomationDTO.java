@@ -18,4 +18,15 @@ public class AutomationDTO {
     private boolean active;
     private List<Keyword> keywords;
     private Listener listener;
+
+    public AutomationDTO(String id, String name, LocalDateTime createdAt, boolean active, List<Keyword> keywords,
+            Listener listener) {
+        this.id = id;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.active = active;
+        this.keywords = keywords;
+        this.listener = listener;
+    }
+
 }

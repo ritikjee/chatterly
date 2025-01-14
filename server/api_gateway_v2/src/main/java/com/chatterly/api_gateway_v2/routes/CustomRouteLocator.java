@@ -15,6 +15,8 @@ public class CustomRouteLocator {
                                                 .uri("http://localhost:8081"))
                                 .route("user_service", r -> r.path("/api/v1/user/**")
                                                 .uri("http://localhost:8081"))
+                                .route("automation_service", r -> r.path("/api/v1/automation/**")
+                                                .uri("http://localhost:8082"))
                                 .build();
 
         }
