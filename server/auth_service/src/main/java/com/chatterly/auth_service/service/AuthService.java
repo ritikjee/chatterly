@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -74,6 +75,7 @@ public class AuthService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    @CacheEvict(value = "users", key = "#email")
     public boolean verifyUser(String email, String token) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -89,6 +91,7 @@ public class AuthService implements UserDetailsService {
         return true;
     }
 
+    @CacheEvict(value = "users", key = "#email")
     public String generateVerificationToken(String email) {
         User user = userRepository.findByEmailAndVerified(email, false);
         if (user == null) {
