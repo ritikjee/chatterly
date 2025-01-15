@@ -26,7 +26,7 @@ const CreateAutomation = (props: Props) => {
         })
       }
     >
-      <Loader state={false}>
+      <Loader state={isPending}>
         <AutomationDuoToneWhite />
         <p className="lg:inline hidden">Create an Automation</p>
       </Loader>

@@ -1,12 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { usePaths } from "@/hooks/use-nav";
 import { useQueryAutomations } from "@/hooks/user-queries";
-import CreateAutomation from "../create-automation-button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { cn, getMonth } from "@/lib/utils";
+import CreateAutomation from "../create-automation-button";
 import GradientButton from "../gradient-button";
-import { Button } from "@/components/ui/button";
 
 type Props = {};
 
@@ -14,8 +14,6 @@ const AutomationList = (props: Props) => {
   const { pathname } = usePaths();
 
   const { data } = useQueryAutomations();
-
-  console.log(data);
 
   if (data?.error || !data?.data || data?.data?.length === 0) {
     return (

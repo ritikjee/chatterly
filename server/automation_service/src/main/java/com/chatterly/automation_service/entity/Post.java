@@ -3,6 +3,7 @@ package com.chatterly.automation_service.entity;
 import java.io.Serializable;
 
 import com.chatterly.automation_service.enums.MediaType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,5 +32,6 @@ public class Post implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "automation_id", nullable = false)
+    @JsonBackReference
     private Automation automation;
 }

@@ -6,7 +6,7 @@ import { HelpDuoToneWhite } from "@/icons";
 import { usePaths } from "@/hooks/use-nav";
 import { PAGE_BREAD_CRUMBS } from "@/constants/page";
 import Items from "@/components/global/sidebar/item";
-import { SubscriptionPlan } from "@/components/global/user-auth-button";
+import { SubscriptionPlan } from "@/components/global/subscription-plan";
 import UpgradeCard from "@/components/global/sidebar/upgrade";
 import Sheet from "@/components/global/sheet";
 import Image from "next/image";

@@ -19,13 +19,11 @@ const Layout = async ({ children, params }: Props) => {
   await query.prefetchQuery({
     queryKey: ["user-profile"],
     queryFn: () => UserService.getAuthenticatedUser(),
-    staleTime: 60000,
   });
 
   await query.prefetchQuery({
     queryKey: ["user-automations"],
     queryFn: () => AutomationService.getAutomations(),
-    staleTime: 60000,
   });
 
   return (

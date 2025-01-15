@@ -1,5 +1,6 @@
 package com.chatterly.integration_service.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.chatterly.integration_service.enums.IntegrationType;
@@ -17,7 +18,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "integrations")
-public class Integrations {
+public class Integrations implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -1,5 +1,6 @@
 package com.chatterly.subscription_service.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.chatterly.subscription_service.enums.SubscriptionPlan;
@@ -17,7 +18,7 @@ import lombok.Data;
 @Entity
 @Table(name = "subscription")
 @Data
-public class Subscription {
+public class Subscription implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,13 +28,12 @@ public class Subscription {
     private String userId;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SubscriptionPlan plan;
+    private SubscriptionPlan plan = SubscriptionPlan.FREE;
 
-    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(unique = true)

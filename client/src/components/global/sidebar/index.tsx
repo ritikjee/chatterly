@@ -5,7 +5,7 @@ import { usePaths } from "@/hooks/use-nav";
 import { HelpDuoToneWhite } from "@/icons";
 import Image from "next/image";
 import Items from "./item";
-import { SubscriptionPlan } from "../user-auth-button";
+import { SubscriptionPlan } from "../subscription-plan";
 import UpgradeCard from "./upgrade";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

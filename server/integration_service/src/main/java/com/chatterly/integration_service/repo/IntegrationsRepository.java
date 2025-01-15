@@ -6,10 +6,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chatterly.integration_service.entity.Integrations;
 
+@Repository
 public interface IntegrationsRepository extends JpaRepository<Integrations, String> {
     Optional<Integrations> findByUserId(String userId);
 

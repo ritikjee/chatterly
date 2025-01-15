@@ -3,6 +3,8 @@ package com.chatterly.automation_service.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,6 +27,7 @@ public class Dms implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "automation_id", nullable = false)
+    @JsonBackReference
     private Automation automation;
 
     @Column(nullable = false, updatable = false)

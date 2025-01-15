@@ -13,7 +13,7 @@ import com.chatterly.automation_service.entity.Automation;
 
 @Repository
 public interface AutomationRepository extends JpaRepository<Automation, String> {
-    // TODO : enable automation DTO
+
     List<Automation> findByUserId(String userId);
 
     Optional<Automation> findByIdAndUserId(String id, String userId);
@@ -21,11 +21,11 @@ public interface AutomationRepository extends JpaRepository<Automation, String> 
     @Modifying
     @Transactional
     @Query("UPDATE Automation a SET a.name = :name WHERE a.id = :id AND a.userId = :userId")
-    boolean updateNameById(String id, String userId, String name);
+    int updateNameById(String id, String userId, String name);
 
     @Modifying
     @Transactional
     @Query("UPDATE Automation a SET a.active = :active WHERE a.id = :id")
-    boolean updateActiveById(String id, String userId, boolean active);
+    int updateActiveById(String id, String userId, boolean active);
 
 }
