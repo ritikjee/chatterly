@@ -62,7 +62,7 @@ public class AutomationService {
     @Cacheable(value = "automation-details", key = "#userId+'::'+#id")
     public Automation getAutomationById(String id, String userId) {
         return automationRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new RuntimeException("No automation found"));
+                .orElseThrow(() -> new RuntimeException("Automation not found"));
     }
 
 }

@@ -7,17 +7,16 @@ import org.springframework.stereotype.Service;
 import com.chatterly.automation_service.entity.Automation;
 import com.chatterly.automation_service.entity.Keyword;
 import com.chatterly.automation_service.records.KeywordProjection;
-import com.chatterly.automation_service.repo.AutomationRepository;
 import com.chatterly.automation_service.repo.KeywordRepository;
 
 @Service
 public class KeywordService {
 
-    private final AutomationRepository automationRepository;
+    private final AutomationService automationService;
     private final KeywordRepository keywordRepository;
 
-    public KeywordService(AutomationRepository automationRepository, KeywordRepository keywordRepository) {
-        this.automationRepository = automationRepository;
+    public KeywordService(AutomationService automationService, KeywordRepository keywordRepository) {
+        this.automationService = automationService;
         this.keywordRepository = keywordRepository;
     }
 
@@ -26,14 +25,11 @@ public class KeywordService {
             @CacheEvict(value = "automation-details", key = "#userId+'::'+#keywordProjection.automationId()")
     })
     public String addKeyword(KeywordProjection keywordProjection, String userId) {
-        Automation automation = automationRepository.findByIdAndUserId(keywordProjection.automationId(), userId)
-                .orElseThrow(
-                        () -> new RuntimeException("Automation not found"));
+        Automation automation = automationService.getAutomationById(keywordProjection.automationId(), userId);
 
         keywordRepository.save(new Keyword(keywordProjection.keywordId(), automation));
 
         return "Keyword added successfully";
-
     }
 
     @Caching(evict = {

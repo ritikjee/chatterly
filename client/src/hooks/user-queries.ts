@@ -1,4 +1,5 @@
 import { AutomationService } from "@/services/automation-service";
+import { IntegrationService } from "@/services/integration-service";
 import { SubscriptionService } from "@/services/subscription-service";
 import { UserService } from "@/services/user-service";
 import { useQuery } from "@tanstack/react-query";
@@ -28,5 +29,13 @@ export const useSubscription = () => {
   return useQuery({
     queryKey: ["user-subscription"],
     queryFn: () => SubscriptionService.getSubscription,
+  });
+};
+
+export const useQueryAutomationPosts = () => {
+  const fetchPosts = async () => await IntegrationService.getInstagramPosts();
+  return useQuery({
+    queryKey: ["instagram-media"],
+    queryFn: fetchPosts,
   });
 };

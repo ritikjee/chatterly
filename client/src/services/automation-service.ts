@@ -34,6 +34,14 @@ export class AutomationService {
     });
   }
 
+  static async activateAutomation(id: string, state: boolean) {
+    return await fetcher({
+      method: "PUT",
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/automation/activate/${id}`,
+      params: { state },
+    });
+  }
+
   static async saveListener(
     automationId: string,
     listener: "SMARTAI" | "MESSAGE",
@@ -81,6 +89,25 @@ export class AutomationService {
       data: {
         automationId,
         keywordId,
+      },
+    });
+  }
+
+  static async addPost(
+    automationId: string,
+    posts: {
+      postid: string;
+      caption?: string;
+      media: string;
+      mediaType: "IMAGE" | "VIDEO" | "CAROSEL_ALBUM";
+    }[]
+  ) {
+    return await fetcher({
+      method: "POST",
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/automation/post/create`,
+      data: {
+        automationId,
+        posts,
       },
     });
   }

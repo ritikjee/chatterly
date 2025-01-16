@@ -6,6 +6,7 @@ import { useMutationDataState } from "@/hooks/use-mutation-data";
 import { useQueryAutomation } from "@/hooks/user-queries";
 import { ChevronRight, PencilIcon } from "lucide-react";
 import React from "react";
+import ActivateAutomationButton from "../activate-automation-button";
 
 type Props = {
   id: string;
@@ -61,7 +62,7 @@ function AutomationsBreadCrumb({ id }: Props) {
           </p>
         </div>
       </div>
-      {/* <ActivateAutomationButton id={id} /> */}
+      <ActivateAutomationButton id={id} />
     </div>
   );
 }

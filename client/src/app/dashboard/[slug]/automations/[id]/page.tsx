@@ -1,4 +1,5 @@
 import AutomationsBreadCrumb from "@/components/global/bread-crumbs/automation";
+import PostNode from "@/components/global/post/node";
 import ThenNode from "@/components/global/then/node";
 import Trigger from "@/components/global/trigger";
 import { Warning } from "@/icons";
@@ -46,6 +47,7 @@ async function Page({ params }: Props) {
           <Trigger id={params.id} />
         </div>
         <ThenNode id={params.id} />
+        <PostNode id={params.id} />
       </div>
     </HydrationBoundary>
   );

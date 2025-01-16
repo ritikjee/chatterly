@@ -6,18 +6,17 @@ import org.springframework.stereotype.Service;
 
 import com.chatterly.automation_service.entity.Listener;
 import com.chatterly.automation_service.records.ListenerProjection;
-import com.chatterly.automation_service.repo.AutomationRepository;
 import com.chatterly.automation_service.repo.ListenerRepository;
 
 @Service
 public class ListenerService {
 
     private final ListenerRepository listenerRepository;
-    private final AutomationRepository automationRepository;
+    private final AutomationService automationService;
 
-    public ListenerService(ListenerRepository listenerRepository, AutomationRepository automationRepository) {
+    public ListenerService(ListenerRepository listenerRepository, AutomationService automationService) {
         this.listenerRepository = listenerRepository;
-        this.automationRepository = automationRepository;
+        this.automationService = automationService;
     }
 
     @Caching(evict = {
@@ -31,8 +30,7 @@ public class ListenerService {
         newListener.setPrompt(listener.prompt());
         newListener.setCommentReply(listener.reply());
         newListener.setAutomation(
-                automationRepository.findByIdAndUserId(listener.automationId(), userId).orElseThrow(
-                        () -> new RuntimeException("No automation found for id: " + listener.automationId())));
+                automationService.getAutomationById(listener.automationId(), userId));
 
         listenerRepository.save(newListener);
 

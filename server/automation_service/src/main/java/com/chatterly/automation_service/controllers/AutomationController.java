@@ -40,8 +40,9 @@ public class AutomationController {
     public ResponseEntity<?> createAutomation(@RequestHeader("userId") String userId) {
 
         try {
+            automationService.createAutomation(userId);
             return ResponseEntity
-                    .ok(new SuccessResponseDTO<>(HttpStatus.OK, automationService.createAutomation(userId)));
+                    .ok(new SuccessResponseDTO<>(HttpStatus.OK, "Automation Activated successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
@@ -61,17 +62,18 @@ public class AutomationController {
         }
     }
 
-    @PutMapping("update-activity/{id}")
+    @PutMapping("activate/{id}")
     public ResponseEntity<?> putMethodActive(@PathVariable String id,
-            @RequestParam boolean active,
+            @RequestParam boolean state,
             @RequestHeader("userId") String userId) {
         try {
-            automationService.updateAutomationActive(id, userId, active);
-            return ResponseEntity.ok(new SuccessResponseDTO<>(HttpStatus.OK, "Automation updated successfully"));
+
+            return ResponseEntity.ok(new SuccessResponseDTO<>(HttpStatus.OK,
+                    automationService.updateAutomationActive(id, userId, state)));
         } catch (Exception e) {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+                    .body(new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error"));
         }
     }
 

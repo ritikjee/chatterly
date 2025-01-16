@@ -8,17 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.chatterly.automation_service.entity.Automation;
 import com.chatterly.automation_service.entity.Trigger;
-import com.chatterly.automation_service.repo.AutomationRepository;
 import com.chatterly.automation_service.repo.TriggerRepository;
 
 @Service
 public class TriggerService {
 
-    private final AutomationRepository automationRepository;
+    private final AutomationService automationService;
     private final TriggerRepository triggerRepository;
 
-    public TriggerService(AutomationRepository automationRepository, TriggerRepository triggerRepository) {
-        this.automationRepository = automationRepository;
+    public TriggerService(AutomationService automationService, TriggerRepository triggerRepository) {
+        this.automationService = automationService;
         this.triggerRepository = triggerRepository;
     }
 
@@ -27,9 +26,7 @@ public class TriggerService {
             @CacheEvict(value = "automation-details", key = "#userId+'::'+#automationId")
     })
     public String createTrigger(String automationId, String userId, ArrayList<String> triggers) {
-        Automation automation = automationRepository.findByIdAndUserId(automationId, userId)
-                .orElseThrow(
-                        () -> new RuntimeException("Automation not found"));
+        Automation automation = automationService.getAutomationById(automationId, userId);
 
         triggers.forEach(trigger -> {
             triggerRepository.save(new Trigger(trigger, automation));

@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chatterly.integration_service.dto.ErrorResponseDTO;
@@ -12,7 +11,6 @@ import com.chatterly.integration_service.dto.SuccessResponseDTO;
 import com.chatterly.integration_service.services.IntegrationService;
 
 @RestController
-@RequestMapping("/api/v1/integration")
 public class IntegrationController {
 
     private final IntegrationService integrationService;

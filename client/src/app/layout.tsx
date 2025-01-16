@@ -29,7 +29,7 @@ export default function RootLayout({
         >
           <ReduxProvider>
             <ReactQueryProvider>{children}</ReactQueryProvider>
-            <Toaster />
+            <Toaster richColors />
           </ReduxProvider>
         </ThemeProvider>
       </body>
